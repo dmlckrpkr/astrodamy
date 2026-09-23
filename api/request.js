@@ -34,7 +34,8 @@ function istemciIp(req) {
 }
 
 // --- Validasyon ---
-const EPOSTA = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// Domain en az bir nokta içermeli ve her parçası dolu olmalı: a@b, a@b., a@.b, a@b..c reddedilir
+const EPOSTA = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/
 const TELEFON = /^\d{10,11}$/
 
 const metin = (deger) => (typeof deger === 'string' ? deger.trim() : '')
@@ -54,7 +55,7 @@ function dogrula(govde) {
   const veri = {
     name: metin(govde.name),
     phone: metin(govde.phone),
-    email: metin(govde.email),
+    email: metin(govde.email).toLowerCase(),
   }
   const hatalar = []
 
