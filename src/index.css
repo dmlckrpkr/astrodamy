@@ -94,6 +94,22 @@ h2 { font-weight: normal; font-size: 1.6rem; text-align: center; margin-bottom: 
 }
 .dolu { opacity: .8; }
 
+/* Kategori filtresi */
+.filtre { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+.filtre-buton {
+  font-family: inherit;
+  font-size: .88rem;
+  color: var(--lavanta);
+  background: transparent;
+  border: 1px solid var(--cizgi);
+  border-radius: 20px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: border-color .3s ease, color .3s ease, background .3s ease;
+}
+.filtre-buton:hover { border-color: var(--altin); color: var(--altin); }
+.filtre-buton.secili { background: var(--altin); border-color: var(--altin); color: var(--gece); }
+
 /* Talep / kontenjan formları */
 .buton {
   font-family: inherit;

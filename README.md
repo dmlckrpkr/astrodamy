@@ -11,7 +11,8 @@ API route'u üzerinden gönderilir.
 
 - **Günlük Burç Yorumları:** 12 burç
 - **Aylık Genel Yorum:** ayın enerjisi, aşk, iş/para
-- **Danışmanlık paketleri:** Doğum Haritası Analizi, Numeroloji Okuması, Sinastri
+- **Danışmanlık paketleri:** Doğum Haritası Analizi, Numeroloji Okuması, Sinastri; kategori filtresi
+  (Tümü / Harita / Sayılar / İlişki)
 - **İki form:**
   - Müsait paketlerde **Danışmanlık Talep Et** (`consultation_request`)
   - Kontenjanı dolu paketlerde **Kontenjan Açılınca Haber Ver** (`waitlist_request`)
@@ -91,7 +92,8 @@ api/
   request.js            form gönderimi: validasyon, rate limit, webhook'a iletme
 src/
   data.js               günlük ve aylık yorum içerikleri
-  data/products.js      danışmanlık paketleri (productId, ad, fiyat, sure, musait…)
+  data/products.js      danışmanlık paketleri (productId, kategori, ad, fiyat, sure, musait…)
+                        ve filtre kategorileri
   lib/api.js            /api/request istemcisi
   gizlilik.jsx          Gizlilik Politikası sayfasının girişi
   components/           Header, GunlukBurclar, AylikYorum, Danismanlik, ProductList,
