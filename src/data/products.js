@@ -1,10 +1,19 @@
 // Danışmanlık paketleri — ödevdeki "ürünler". productId'ler CLAUDE.md tablosuyla aynı.
 // "Stokta yok" = kontenjan dolu (musait: false).
 // Webhook payload'larında: productId → productId, ad → productName.
+// kategori: danışmanlık bölümündeki filtre butonları için (bkz. kategoriler).
+
+export const kategoriler = [
+  { id: 'tumu', ad: 'Tümü' },
+  { id: 'harita', ad: 'Harita' },
+  { id: 'sayilar', ad: 'Sayılar' },
+  { id: 'iliski', ad: 'İlişki' },
+]
 
 export const products = [
   {
     productId: 'dogum-haritasi',
+    kategori: 'harita',
     ikon: '🌙',
     ad: 'Doğum Haritası Analizi',
     fiyat: 1200,
@@ -14,6 +23,7 @@ export const products = [
   },
   {
     productId: 'numeroloji',
+    kategori: 'sayilar',
     ikon: '🔢',
     ad: 'Numeroloji Okuması',
     fiyat: 800,
@@ -23,6 +33,7 @@ export const products = [
   },
   {
     productId: 'sinastri',
+    kategori: 'iliski',
     ikon: '💞',
     ad: 'Sinastri (İlişki Uyumu)',
     fiyat: 1500,
