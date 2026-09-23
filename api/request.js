@@ -49,7 +49,8 @@ const EVENTLER = {
 const ALAN_ADLARI = { name: 'Ad Soyad', phone: 'Telefon', email: 'E-posta' }
 
 function dogrula(govde) {
-  const tanim = EVENTLER[govde.event]
+  // hasOwn: "constructor", "__proto__" gibi Object.prototype anahtarları event sayılmasın
+  const tanim = Object.hasOwn(EVENTLER, govde.event) ? EVENTLER[govde.event] : null
   if (!tanim) return { hatalar: ['Geçersiz istek türü.'] }
 
   const veri = {
@@ -69,7 +70,7 @@ function dogrula(govde) {
   if (tanim.alanlar.includes('phone') && veri.phone && !TELEFON.test(veri.phone)) {
     hatalar.push('Telefon numarası yalnızca rakamlardan oluşmalı ve 10-11 haneli olmalıdır.')
   }
-  if (veri.email && !EPOSTA.test(veri.email)) {
+  if (veri.email && (veri.email.length > 254 || !EPOSTA.test(veri.email))) {
     hatalar.push('Lütfen geçerli bir e-posta adresi gir.')
   }
 
@@ -119,7 +120,13 @@ export default async function handler(req, res) {
       .json({ error: 'Çok fazla istek gönderdin. Lütfen bir dakika bekleyip tekrar dene.' })
   }
 
-  let govde = req.body
+  // Vercel, bozuk JSON'da req.body okunurken hata fırlatır
+  let govde
+  try {
+    govde = req.body
+  } catch {
+    govde = null
+  }
   if (typeof govde === 'string') {
     try {
       govde = JSON.parse(govde)

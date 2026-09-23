@@ -1,5 +1,5 @@
-// KVKK (6698 sayılı Kanun) aydınlatma metni taslağı. Köşeli parantezli alanlar doldurulmalı.
-const ILETISIM_EPOSTA = '[iletişim e-posta adresi]'
+// KVKK (6698 sayılı Kanun) aydınlatma metni.
+const ILETISIM_EPOSTA = 'asklunami@gmail.com'
 
 export default function GizlilikPolitikasi() {
   return (
@@ -11,7 +11,7 @@ export default function GizlilikPolitikasi() {
       <h3>1. Veri sorumlusu</h3>
       <p>
         Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) kapsamında veri sorumlusu
-        sıfatıyla AstroDamy ([ad soyad]) tarafından hazırlanmıştır. AstroDamy, astroloji içerikleri ve
+        sıfatıyla AstroDamy (Damla Peker) tarafından hazırlanmıştır. AstroDamy, astroloji içerikleri ve
         birebir online danışmanlık sunan tek kişilik bir dijital hizmettir.
       </p>
 
@@ -86,8 +86,8 @@ export default function GizlilikPolitikasi() {
       <h3>8. İletişim</h3>
       <p>
         Haklarını kullanmak veya sorularını iletmek için{' '}
-        <strong>{ILETISIM_EPOSTA}</strong> adresine yazabilirsin. Başvurularını en geç 30 gün içinde
-        ücretsiz olarak yanıtlarız.
+        <a href={`mailto:${ILETISIM_EPOSTA}`}>{ILETISIM_EPOSTA}</a> adresine yazabilirsin.
+        Başvurularını en geç 30 gün içinde ücretsiz olarak yanıtlarız.
       </p>
     </section>
   )
