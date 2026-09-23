@@ -11,10 +11,10 @@
 | 1 | Secret'lar | ✅ | Webhook adresi yalnızca sunucuda; repoda, git geçmişinde ve tarayıcıya giden JS'te yok |
 | 2 | `.gitignore` | ✅ | `.env*` ve `.vercel` dışlanıyor; takip edilen tek env dosyası değersiz `.env.example` |
 | 3 | Server-side validasyon | ✅ | Tüm alanlar sunucuda doğrulanıyor; kontrolde bulunan 3 açık bu committe kapatıldı |
-| 4 | Rate limit | ⚠️ | IP sahtelenemiyor, ama canlıda hızlı art arda gelen istekler sınırı aşabiliyor |
-| 5 | KVKK / açık rıza | ⚠️ | Rıza kutusu, sunucu kontrolü ve politika sayfası tamam; veriler hâlâ webhook.site'a gidiyor |
+| 4 | Rate limit | ⚠️ | IP sahtelenemiyor, ama canlıda hızlı art arda gelen istekler sınırı aşabiliyor. *Bilinen sınırlama, ödev kapsamında kabul edildi.* |
+| 5 | KVKK / açık rıza | ⚠️ | Rıza kutusu, sunucu kontrolü ve politika sayfası tamam; veriler hâlâ webhook.site'a gidiyor. *Bilinen sınırlama, ödev kapsamında kabul edildi.* |
 | 6 | HTTPS | ✅ | HTTP → HTTPS 308 yönlendirmesi ve HSTS var |
-| 6a | Güvenlik başlıkları (ek) | ⚠️ | CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy yok |
+| 6a | Güvenlik başlıkları (ek) | ✅ | X-Frame-Options, X-Content-Type-Options, Referrer-Policy ve CSP eklendi; site CSP altında hatasız çalışıyor |
 | 7 | Hata mesajlarında iç bilgi sızmaması | ✅ | Kullanıcıya yalnızca genel Türkçe mesajlar dönüyor; ayrıntı sadece sunucu loglarında |
 | 8 | Bağımlılık güvenliği / `npm audit` | ✅ | 0 açık; yalnızca güvenlikle ilgisi olmayan major güncellemeler var |
 
@@ -67,6 +67,9 @@ Test sonuçları: `TEST-NOTU.md`.
 
 ## 4. Rate limit ⚠️
 
+> **Bilinen sınırlama, ödev kapsamında kabul edildi.** Hızlı art arda gelen isteklerde sınırın aşılabilmesi
+> bu proje için kabul edildi. Gerçek trafik alan bir sitede aşağıdaki öneri uygulanmalı.
+
 Kural: IP başına dakikada 10 istek. Sayaç Vercel Runtime Cache'te tutuluyor.
 
 **Çalışanlar:**
@@ -85,6 +88,9 @@ Kural: IP başına dakikada 10 istek. Sayaç Vercel Runtime Cache'te tutuluyor.
 katmanla kurulabilir ama hesapta yeni bir servis açmayı gerektiriyor.
 
 ## 5. KVKK / açık rıza ⚠️
+
+> **Bilinen sınırlama, ödev kapsamında kabul edildi.** Verilerin webhook.site'a gitmesi ödev kapsamında
+> kabul edildi. Site gerçek kullanıcı verisi toplamaya başlamadan önce hedef değiştirilmeli.
 
 **Tamam olanlar:**
 - **Rıza kutusu:** iki formda da zorunlu, metni "Kişisel verilerimin Gizlilik Politikası kapsamında
@@ -110,11 +116,25 @@ katmanla kurulabilir ama hesapta yeni bir servis açmayı gerektiriyor.
 - `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
 - Sunucudan webhook'a giden istek de HTTPS üzerinden gidiyor.
 
-### 6a. Güvenlik başlıkları (ek madde) ⚠️
+### 6a. Güvenlik başlıkları (ek madde) ✅
 
-Canlı yanıtta `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`,
-`Referrer-Policy` başlıkları yok. Örneğin site başka bir sayfaya iframe ile gömülebiliyor
-(clickjacking). **Öneri:** `vercel.json` içinde `headers` ile eklemek. CSP canlıda denenerek eklenmeli.
+| Başlık | Değer | Nerede |
+|---|---|---|
+| `X-Frame-Options` | `DENY` | `vercel.json` (tüm yollar) |
+| `X-Content-Type-Options` | `nosniff` | `vercel.json` (tüm yollar) |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | `vercel.json` (tüm yollar) |
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'` | HTML'de `<meta>`, yalnızca production build'inde (`vite.config.js`) |
+
+- **X-Frame-Options DENY:** site başka bir sayfaya iframe ile gömülemiyor (clickjacking).
+- **CSP neden `<meta>` olarak eklendi:** `vercel.json`'daki başlıklar `vercel dev`'de de uygulanıyor.
+  Vite'ın geliştirme modu satır içi script ve style kullandığı için yerel site boş sayfa gösteriyordu.
+  `vercel.json`'daki `missing` (host) koşulu `vercel dev`'de işe yaramadı. Bu yüzden CSP, küçük bir
+  Vite eklentisiyle yalnızca production HTML'ine `<meta>` etiketi olarak ekleniyor.
+- **`frame-ancestors` yok:** bu yönerge `<meta>` içinde desteklenmiyor. Aynı korumayı
+  X-Frame-Options: DENY sağlıyor.
+- **Siteyi bozmadığı kontrol edildi:** production build'i headless Chrome ile açıldı. Ana sayfada
+  4 filtre butonu ve 3 paket kartı, gizlilik sayfasında politika metni çiziliyor. CSP ya da konsol
+  hatası yok. Yerel `vercel dev` de CSP olmadan normal çalışıyor.
 
 ## 7. Hata mesajlarında iç bilgi sızmaması ✅
 
