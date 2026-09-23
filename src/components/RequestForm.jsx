@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { consultationPayload, waitlistPayload, sendWebhook } from '../lib/webhook.js'
+import { consultationRequest, waitlistRequest, sendRequest } from '../lib/api.js'
 
 // musait=true → danışmanlık talebi (ad, telefon, e-posta)
 // musait=false → kontenjan bildirimi (ad, e-posta)
@@ -7,14 +7,14 @@ const TURLER = {
   talep: {
     buton: 'Danışmanlık Talep Et',
     alanlar: ['name', 'phone', 'email'],
-    payload: consultationPayload,
+    istek: consultationRequest,
     onay: ({ name }) =>
       `Teşekkürler ${name}! Talebin bize ulaştı; seansını planlamak için kısa süre içinde seninle iletişime geçeceğiz.`,
   },
   bekleme: {
     buton: 'Kontenjan Açılınca Haber Ver',
     alanlar: ['name', 'email'],
-    payload: waitlistPayload,
+    istek: waitlistRequest,
     onay: ({ email }) =>
       `Teşekkürler! Kontenjan açıldığında ${email} adresine haber vereceğiz.`,
   },
@@ -22,11 +22,17 @@ const TURLER = {
 
 const ALANLAR = {
   name: { etiket: 'Ad Soyad', type: 'text', autoComplete: 'name' },
-  phone: { etiket: 'Telefon', type: 'tel', autoComplete: 'tel' },
+  phone: {
+    etiket: 'Telefon',
+    type: 'tel',
+    autoComplete: 'tel',
+    inputMode: 'numeric',
+    placeholder: '05xxxxxxxxx',
+  },
   email: { etiket: 'E-posta', type: 'email', autoComplete: 'email' },
 }
 
-const BOS_FORM = { name: '', phone: '', email: '' }
+const BOS_FORM = { name: '', phone: '', email: '', riza: false }
 
 export default function RequestForm({ paket }) {
   const tur = paket.musait ? TURLER.talep : TURLER.bekleme
@@ -35,7 +41,10 @@ export default function RequestForm({ paket }) {
   const [durum, setDurum] = useState('bos') // bos | gonderiliyor | basarili | hata
   const [hata, setHata] = useState('')
 
-  const degistir = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+  const degistir = (e) => {
+    const { name, type, checked, value } = e.target
+    setForm({ ...form, [name]: type === 'checkbox' ? checked : value })
+  }
 
   const gonder = async (e) => {
     e.preventDefault()
@@ -46,16 +55,20 @@ export default function RequestForm({ paket }) {
       setHata('Lütfen tüm alanları doldur.')
       return
     }
+    if (!form.riza) {
+      setDurum('hata')
+      setHata('Devam etmek için kişisel verilerinin işlenmesine açık rıza vermelisin.')
+      return
+    }
 
     setForm({ ...form, ...veri })
     setDurum('gonderiliyor')
     try {
-      await sendWebhook(tur.payload(paket, veri))
+      await sendRequest(tur.istek(paket, veri, form.riza))
       setDurum('basarili')
     } catch (err) {
-      console.error(err)
       setDurum('hata')
-      setHata('Gönderim sırasında bir sorun oluştu. Lütfen biraz sonra tekrar dene.')
+      setHata(err.message)
     }
   }
 
@@ -82,6 +95,8 @@ export default function RequestForm({ paket }) {
             name={alan}
             type={ALANLAR[alan].type}
             autoComplete={ALANLAR[alan].autoComplete}
+            inputMode={ALANLAR[alan].inputMode}
+            placeholder={ALANLAR[alan].placeholder}
             value={form[alan]}
             onChange={degistir}
             required
@@ -89,6 +104,22 @@ export default function RequestForm({ paket }) {
           />
         </label>
       ))}
+
+      <label className="riza">
+        <input
+          name="riza"
+          type="checkbox"
+          checked={form.riza}
+          onChange={degistir}
+          required
+          disabled={gonderiliyor}
+        />
+        <span>
+          Kişisel verilerimin{' '}
+          <a href="/gizlilik.html" target="_blank" rel="noopener">Gizlilik Politikası</a>{' '}
+          kapsamında işlenmesine açık rıza veriyorum.
+        </span>
+      </label>
 
       {durum === 'hata' && <p className="form-mesaj hata" role="alert">{hata}</p>}
 

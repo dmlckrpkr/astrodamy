@@ -136,3 +136,20 @@ footer {
   font-size: .85rem;
   border-top: 1px solid var(--cizgi);
 }
+
+.talep-formu label.riza {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: .82rem;
+  line-height: 1.45;
+}
+.talep-formu label.riza input { margin-top: 3px; accent-color: var(--altin); flex-shrink: 0; }
+
+/* Gizlilik Politikası */
+.gizlilik { max-width: 780px; margin: 0 auto; }
+.gizlilik h3 { font-weight: normal; color: var(--altin); margin: 28px 0 8px; font-size: 1.15rem; }
+.gizlilik p, .gizlilik li { font-size: .95rem; }
+.gizlilik p + p { margin-top: 10px; }
+.gizlilik ul { padding-left: 22px; margin-top: 8px; display: grid; gap: 4px; }
+.gizlilik .guncelleme { text-align: center; color: var(--soluk); font-size: .85rem; margin-bottom: 8px; }
