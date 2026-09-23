@@ -34,3 +34,33 @@ yenidir, yani sayaç sıfırdan başlar. Bu yüzden:
   ulaşıp 400 aldı, 11. istekten itibaren 429 döndü. 429 yanıtında `Retry-After: 60` başlığı da var.
 - 400 yanıtlarında `error` alanının yanında aynı mesajları dizi olarak veren bir `errors` alanı da döner.
   Tabloda `error` alanı gösterildi.
+
+## E-posta uzantısı (TLD) testi — 22 Eylül 2026
+
+**Sorun:** canlıda `dmlcakir@gmail.c` kabul ediliyordu. Eski kural domain'de yalnızca nokta ve dolu
+parçalar arıyordu; son uzantının uzunluğuna ve içeriğine bakmıyordu.
+
+**Yeni kural** (`src/lib/eposta.js`): son uzantı en az 2 harf ve yalnızca harf olmalı. Kural hem
+sunucuda (`api/request.js`) hem formda (`RequestForm`) aynı dosyadan kullanılıyor; form geçersiz
+e-postada istek göndermeden aynı mesajı gösteriyor.
+
+- **Ortam:** canlı site https://astrodamy.vercel.app (commit `55f162c`), `curl`
+- **Zaman:** 23:41:00, yeni bir dakikanın başında (rate limit sayacı temiz)
+- **İstek:** `waitlist_request`, `sinastri`, `consent: true`; yalnızca e-posta değişti
+- **Sonuç:** 5 testin 5'i beklendiği gibi ✅
+
+| # | E-posta | Beklenen | Gelen HTTP kodu | Dönen mesaj |
+|---|---|---|---|---|
+| 9 | `dmlcakir@gmail.c` | 400 (red) | 400 ✅ | Lütfen geçerli bir e-posta adresi gir. |
+| 10 | `dmlcakir@gmail.co` | 200 (kabul) | 200 ✅ | `{"ok":true}` |
+| 11 | `ad.soyad@mail.com.tr` | 200 (kabul) | 200 ✅ | `{"ok":true}` |
+| 12 | `dmlcakir@gmail.c0m` (uzantıda rakam) | 400 (red) | 400 ✅ | Lütfen geçerli bir e-posta adresi gir. |
+| 13 | `a@b.` (boş uzantı, eski kontrol) | 400 (red) | 400 ✅ | Lütfen geçerli bir e-posta adresi gir. |
+
+**Notlar:**
+- 10 ve 11 numaralı istekler Production webhook'una gerçekten iletildi ("Test Kullanici").
+- Aynı testler önce yerel `vercel dev`'de de çalıştırıldı. Red durumları aynı sonucu verdi. Kabul
+  durumları doğrulamadan geçti ama 500 döndü, çünkü Vercel projesinde Development ortamı için
+  `WEBHOOK_URL` artık tanımlı değil. 500, doğrulama geçildikten sonra dönüyor.
+- Yalnızca harf kuralı nedeniyle `xn--` ile başlayan punycode uzantılar (ör. `.xn--p1ai`) reddedilir.
+  Bu site için kabul edilebilir.
