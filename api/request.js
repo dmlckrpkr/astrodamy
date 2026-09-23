@@ -5,7 +5,9 @@ import { getCache } from '@vercel/functions'
 import { getProductById } from '../src/data/products.js'
 import { epostaGecerli, EPOSTA_HATA } from '../src/lib/eposta.js'
 
-const SOURCE = 'astrodamy-web'
+// İsteğin geldiği uygulama. Gönderilmezse web sayılır (eski sürüm sayfalar source göndermiyordu).
+const KAYNAKLAR = ['astrodamy-web', 'astrodamy-mobile']
+const VARSAYILAN_KAYNAK = 'astrodamy-web'
 
 // --- Rate limit: IP başına dakikada 10 istek ---
 // Sayaç Vercel Runtime Cache'te tutulur; her istek ayrı bir örnekte çalışsa da ortak sayaç görülür.
@@ -56,6 +58,7 @@ function dogrula(govde) {
     name: metin(govde.name),
     phone: metin(govde.phone),
     email: metin(govde.email).toLowerCase(),
+    source: govde.source ?? VARSAYILAN_KAYNAK,
   }
   const hatalar = []
 
@@ -84,6 +87,10 @@ function dogrula(govde) {
     )
   }
 
+  if (!KAYNAKLAR.includes(veri.source)) {
+    hatalar.push('Geçersiz istek kaynağı.')
+  }
+
   if (govde.consent !== true) {
     hatalar.push('Devam etmek için kişisel verilerinin işlenmesine açık rıza vermelisin.')
   }
@@ -92,7 +99,7 @@ function dogrula(govde) {
 }
 
 // Ürün alanlarından payload'a eşleme: productId → productId, ad → productName
-function payloadOlustur(event, paket, { name, phone, email }) {
+function payloadOlustur(event, paket, { name, phone, email, source }) {
   const ortak = {
     event,
     name,
@@ -101,7 +108,7 @@ function payloadOlustur(event, paket, { name, phone, email }) {
     email,
     consent: true,
     consentAt: new Date().toISOString(),
-    source: SOURCE,
+    source,
   }
   return event === 'consultation_request' ? { ...ortak, phone, quantity: 1 } : ortak
 }

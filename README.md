@@ -66,6 +66,7 @@ Gövde (JSON):
 | `email` | geçerli e-posta | geçerli e-posta |
 | `phone` | yalnızca rakam, 10–11 hane | — |
 | `consent` | `true` olmalı | `true` olmalı |
+| `source` | `astrodamy-web` / `astrodamy-mobile`; gönderilmezse `astrodamy-web` | aynı |
 
 Yanıtlar:
 

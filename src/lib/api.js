@@ -1,6 +1,8 @@
 // Form gönderimleri /api/request'e gider; doğrulama ve webhook'a iletme sunucuda yapılır
 // (bkz. api/request.js). Webhook adresi tarayıcıda hiç bulunmaz.
 
+const SOURCE = 'astrodamy-web'
+
 export const consultationRequest = (paket, { name, phone, email }, consent) => ({
   event: 'consultation_request',
   productId: paket.productId,
@@ -8,6 +10,7 @@ export const consultationRequest = (paket, { name, phone, email }, consent) => (
   phone,
   email,
   consent,
+  source: SOURCE,
 })
 
 export const waitlistRequest = (paket, { name, email }, consent) => ({
@@ -16,6 +19,7 @@ export const waitlistRequest = (paket, { name, email }, consent) => ({
   name,
   email,
   consent,
+  source: SOURCE,
 })
 
 const GENEL_HATA = 'Gönderim sırasında bir sorun oluştu. Lütfen biraz sonra tekrar dene.'
