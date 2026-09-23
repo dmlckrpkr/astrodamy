@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AstroDamy</title>
+  <style>
+    :root {
+      --gece: #14122b;
+      --gece-2: #1f1c3d;
+      --altin: #d9b26f;
+      --lavanta: #b9aee0;
+      --yazi: #ece8f7;
+      --soluk: #9a94b8;
+      --cizgi: #2f2b55;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      background: var(--gece);
+      background-image: radial-gradient(circle at 20% 10%, #2a2552 0%, transparent 40%),
+                        radial-gradient(circle at 80% 60%, #231f47 0%, transparent 45%);
+      color: var(--yazi);
+      line-height: 1.6;
+    }
+    a { color: var(--altin); }
+    header {
+      text-align: center;
+      padding: 72px 16px 48px;
+      border-bottom: 1px solid var(--cizgi);
+    }
+    .logo { font-size: 2.6rem; letter-spacing: 2px; }
+    .logo span { color: var(--altin); }
+    header p { color: var(--lavanta); font-style: italic; margin-top: 8px; }
+    nav { margin-top: 20px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    nav a { text-decoration: none; font-size: .95rem; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+    section { padding: 56px 0; border-bottom: 1px solid var(--cizgi); }
+    section:last-child { border-bottom: none; }
+    h2 { font-weight: normal; font-size: 1.6rem; text-align: center; margin-bottom: 6px; }
+    .alt-baslik { text-align: center; color: var(--soluk); margin-bottom: 32px; font-size: .95rem; }
+
+    /* Günlük burçlar */
+    .burclar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .burc {
+      background: var(--gece-2);
+      border: 1px solid var(--cizgi);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .burc h3 { font-weight: normal; font-size: 1.1rem; }
+    .burc h3 .sembol { color: var(--altin); margin-right: 6px; }
+    .burc .tarih { color: var(--soluk); font-size: .8rem; }
+    .burc p { font-size: .92rem; margin-top: 8px; }
+
+    /* Aylık */
+    .aylik {
+      background: var(--gece-2);
+      border: 1px solid var(--cizgi);
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .aylik h3 { font-weight: normal; color: var(--altin); margin: 16px 0 4px; }
+    .aylik h3:first-child { margin-top: 0; }
+
+    /* Danışmanlık */
+    .paketler {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .paket {
+      background: var(--gece-2);
+      border: 1px solid var(--cizgi);
+      border-radius: 12px;
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+    }
+    .paket .ikon { font-size: 2.4rem; }
+    .paket h3 { font-weight: normal; font-size: 1.25rem; margin-top: 8px; }
+    .fiyat { color: var(--altin); font-size: 1.2rem; font-weight: bold; margin: 6px 0 10px; }
+    .sure { color: var(--soluk); font-size: .85rem; }
+    .paket p.aciklama { font-size: .92rem; margin: 10px 0 18px; color: var(--yazi); }
+    .rozet {
+      position: absolute; top: 14px; right: 14px;
+      background: #5a2a3a; color: #f3c9d4;
+      font-size: .75rem; padding: 2px 10px; border-radius: 20px;
+    }
+    .dolu { opacity: .8; }
+
+    footer {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--soluk);
+      font-size: .85rem;
+      border-top: 1px solid var(--cizgi);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Astro<span>Damy</span> ✦</div>
+  <p>Gökyüzünün dilini birlikte okuyalım</p>
+  <nav>
+    <a href="#gunluk">Günlük Yorumlar</a>
+    <a href="#aylik">Aylık Yorum</a>
+    <a href="#danismanlik">Danışmanlık</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- GÜNLÜK BURÇ YORUMLARI -->
+  <section id="gunluk">
+    <h2>Günlük Burç Yorumları</h2>
+    <p class="alt-baslik">23 Eylül 2026</p>
+    <div class="burclar">
+      <div class="burc"><h3><span class="sembol">♈</span>Koç</h3><div class="tarih">21 Mart – 19 Nisan</div><p>İş birliklerinde sabırlı ol; bugün dinlemek konuşmaktan daha çok kazandırır.</p></div>
+      <div class="burc"><h3><span class="sembol">♉</span>Boğa</h3><div class="tarih">20 Nisan – 20 Mayıs</div><p>Günlük rutinini düzenlemek için güzel bir gün. Küçük bir değişiklik büyük rahatlık getirir.</p></div>
+      <div class="burc"><h3><span class="sembol">♊</span>İkizler</h3><div class="tarih">21 Mayıs – 20 Haziran</div><p>Yaratıcı fikirlerin hızla akıyor; aklına geleni not almayı unutma.</p></div>
+      <div class="burc"><h3><span class="sembol">♋</span>Yengeç</h3><div class="tarih">21 Haziran – 22 Temmuz</div><p>Ev ve aile gündemde. Kendine ayırdığın sessiz bir saat iyi gelecek.</p></div>
+      <div class="burc"><h3><span class="sembol">♌</span>Aslan</h3><div class="tarih">23 Temmuz – 22 Ağustos</div><p>Sözlerin etkili; önemli bir konuşmayı bugün yapmak için doğru an.</p></div>
+      <div class="burc"><h3><span class="sembol">♍</span>Başak</h3><div class="tarih">23 Ağustos – 22 Eylül</div><p>Maddi konularda netleşme zamanı. Bütçeni gözden geçir, gereksizi ayıkla.</p></div>
+      <div class="burc"><h3><span class="sembol">♎</span>Terazi</h3><div class="tarih">23 Eylül – 22 Ekim</div><p>Güneş burcuna geçiyor, yeni yaş yılın başlıyor. Kendin için niyet belirle.</p></div>
+      <div class="burc"><h3><span class="sembol">♏</span>Akrep</h3><div class="tarih">23 Ekim – 21 Kasım</div><p>İç sesine kulak ver; sezgilerin bugün mantığından daha isabetli.</p></div>
+      <div class="burc"><h3><span class="sembol">♐</span>Yay</h3><div class="tarih">22 Kasım – 21 Aralık</div><p>Arkadaş çevrenden sürpriz bir teklif gelebilir. Açık fikirli ol.</p></div>
+      <div class="burc"><h3><span class="sembol">♑</span>Oğlak</h3><div class="tarih">22 Aralık – 19 Ocak</div><p>Kariyerinde görünürlüğün artıyor. Emeklerinin karşılığını almaya başlıyorsun.</p></div>
+      <div class="burc"><h3><span class="sembol">♒</span>Kova</h3><div class="tarih">20 Ocak – 18 Şubat</div><p>Yeni bir şey öğrenmek için ideal gün. Bir kurs ya da kitap aklındaysa başla.</p></div>
+      <div class="burc"><h3><span class="sembol">♓</span>Balık</h3><div class="tarih">19 Şubat – 20 Mart</div><p>Ortak finanslar ve duygusal bağlar derinleşiyor. Dürüst bir konuşma iyi gelir.</p></div>
+    </div>
+  </section>
+
+  <!-- AYLIK YORUM -->
+  <section id="aylik">
+    <h2>Aylık Genel Yorum</h2>
+    <p class="alt-baslik">Ekim 2026</p>
+    <div class="aylik">
+      <h3>Ayın enerjisi</h3>
+      <p>Terazi sezonuyla birlikte ilişkiler, denge ve adalet temaları öne çıkıyor. Ertelediğin kararları tartıp netleştirmek için verimli bir ay.</p>
+      <h3>Aşk ve ilişkiler</h3>
+      <p>Uzlaşma ve ortak nokta bulma kolaylaşıyor. Karşındakinin bakış açısına alan açmak ilişkilere tazelik getirir.</p>
+      <h3>İş ve para</h3>
+      <p>İş birlikleri ve anlaşmalar için uygun zemin var. İmza atmadan önce detayları iki kez kontrol etmek faydalı olur.</p>
+    </div>
+  </section>
+
+  <!-- DANIŞMANLIK -->
+  <section id="danismanlik">
+    <h2>Astroloji Danışmanlığı</h2>
+    <p class="alt-baslik">Birebir online seanslar</p>
+    <div class="paketler">
+
+      <div class="paket">
+        <div class="ikon">🌙</div>
+        <h3>Doğum Haritası Analizi</h3>
+        <p class="fiyat">1.200 ₺</p>
+        <p class="sure">60 dk · online</p>
+        <p class="aciklama">Güneş, Ay, yükselen ve gezegen yerleşimlerinle kişiliğini, potansiyelini ve hayat temalarını birlikte okuyalım.</p>
+      </div>
+
+      <div class="paket">
+        <div class="ikon">🔢</div>
+        <h3>Numeroloji Okuması</h3>
+        <p class="fiyat">800 ₺</p>
+        <p class="sure">45 dk · online</p>
+        <p class="aciklama">Yaşam yolu sayın, karmik sayıların ve kişisel yıl döngün üzerinden bu dönemin anlamını keşfet.</p>
+      </div>
+
+      <div class="paket dolu">
+        <span class="rozet">Kontenjan dolu</span>
+        <div class="ikon">💞</div>
+        <h3>Sinastri (İlişki Uyumu)</h3>
+        <p class="fiyat">1.500 ₺</p>
+        <p class="sure">75 dk · online</p>
+        <p class="aciklama">İki doğum haritasını karşılaştırarak ilişkinizin güçlü yanlarını ve dikkat edilmesi gereken noktaları inceleyelim.</p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  &copy; 2026 AstroDamy — AtölyeKart Ödevi, Hafta 1
+</footer>
+
+</body>
+</html>

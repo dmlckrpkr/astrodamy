@@ -1,0 +1,138 @@
+:root {
+  --gece: #14122b;
+  --gece-2: #1f1c3d;
+  --altin: #d9b26f;
+  --lavanta: #b9aee0;
+  --yazi: #ece8f7;
+  --soluk: #9a94b8;
+  --cizgi: #2f2b55;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--gece);
+  background-image: radial-gradient(circle at 20% 10%, #2a2552 0%, transparent 40%),
+                    radial-gradient(circle at 80% 60%, #231f47 0%, transparent 45%);
+  color: var(--yazi);
+  line-height: 1.6;
+}
+a { color: var(--altin); }
+header {
+  text-align: center;
+  padding: 72px 16px 48px;
+  border-bottom: 1px solid var(--cizgi);
+}
+.logo { font-size: 2.6rem; letter-spacing: 2px; }
+.logo span { color: var(--altin); }
+header p { color: var(--lavanta); font-style: italic; margin-top: 8px; }
+nav { margin-top: 20px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+nav a { text-decoration: none; font-size: .95rem; }
+
+main { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+section { padding: 56px 0; border-bottom: 1px solid var(--cizgi); }
+section:last-child { border-bottom: none; }
+h2 { font-weight: normal; font-size: 1.6rem; text-align: center; margin-bottom: 6px; }
+.alt-baslik { text-align: center; color: var(--soluk); margin-bottom: 32px; font-size: .95rem; }
+
+/* Günlük burçlar */
+.burclar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+.burc {
+  background: var(--gece-2);
+  border: 1px solid var(--cizgi);
+  border-radius: 10px;
+  padding: 18px;
+}
+.burc h3 { font-weight: normal; font-size: 1.1rem; }
+.burc h3 .sembol { color: var(--altin); margin-right: 6px; }
+.burc .tarih { color: var(--soluk); font-size: .8rem; }
+.burc p { font-size: .92rem; margin-top: 8px; }
+
+/* Aylık */
+.aylik {
+  background: var(--gece-2);
+  border: 1px solid var(--cizgi);
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.aylik h3 { font-weight: normal; color: var(--altin); margin: 16px 0 4px; }
+.aylik h3:first-child { margin-top: 0; }
+
+/* Danışmanlık */
+.paketler {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+.paket {
+  background: var(--gece-2);
+  border: 1px solid var(--cizgi);
+  border-radius: 20px;
+  padding: 28px 24px;
+  text-align: center;
+  position: relative;
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+.paket:hover {
+  border-color: var(--altin);
+  box-shadow: 0 0 18px rgba(217, 178, 111, .25);
+}
+.paket .ikon { font-size: 2.4rem; }
+.paket h3 { font-weight: normal; font-size: 1.25rem; margin-top: 8px; }
+.fiyat { color: var(--altin); font-size: 1.2rem; font-weight: bold; margin: 6px 0 10px; }
+.sure { color: var(--soluk); font-size: .85rem; }
+.paket p.aciklama { font-size: .92rem; margin: 10px 0 18px; color: var(--yazi); }
+.rozet {
+  position: absolute; top: 14px; right: 14px;
+  background: #5a2a3a; color: #f3c9d4;
+  font-size: .75rem; padding: 2px 10px; border-radius: 20px;
+}
+.dolu { opacity: .8; }
+
+/* Talep / kontenjan formları */
+.buton {
+  font-family: inherit;
+  font-size: .92rem;
+  color: var(--altin);
+  background: transparent;
+  border: 1px solid var(--altin);
+  border-radius: 20px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: background .3s ease, color .3s ease;
+}
+.buton:hover:not(:disabled) { background: var(--altin); color: var(--gece); }
+.buton:disabled { opacity: .6; cursor: default; }
+.buton.ikincil { color: var(--soluk); border-color: var(--cizgi); }
+.buton.ikincil:hover:not(:disabled) { background: var(--cizgi); color: var(--yazi); }
+
+.talep-formu { text-align: left; display: grid; gap: 12px; }
+.talep-formu label { display: grid; gap: 4px; font-size: .85rem; color: var(--lavanta); }
+.talep-formu input {
+  font-family: inherit;
+  font-size: .95rem;
+  color: var(--yazi);
+  background: var(--gece);
+  border: 1px solid var(--cizgi);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.talep-formu input:focus { outline: none; border-color: var(--altin); }
+.form-butonlar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+
+.form-mesaj { font-size: .9rem; border-radius: 10px; padding: 10px 14px; }
+.form-mesaj.onay { color: var(--lavanta); border: 1px solid var(--cizgi); background: var(--gece); }
+.form-mesaj.hata { color: #f3c9d4; background: #5a2a3a; }
+
+footer {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--soluk);
+  font-size: .85rem;
+  border-top: 1px solid var(--cizgi);
+}
