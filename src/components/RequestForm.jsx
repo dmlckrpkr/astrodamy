@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { consultationRequest, waitlistRequest, sendRequest } from '../lib/api.js'
+import { epostaGecerli, EPOSTA_HATA } from '../lib/eposta.js'
 
 // musait=true → danışmanlık talebi (ad, telefon, e-posta)
 // musait=false → kontenjan bildirimi (ad, e-posta)
@@ -53,6 +54,11 @@ export default function RequestForm({ paket }) {
     if (tur.alanlar.some((alan) => !veri[alan])) {
       setDurum('hata')
       setHata('Lütfen tüm alanları doldur.')
+      return
+    }
+    if (!epostaGecerli(veri.email)) {
+      setDurum('hata')
+      setHata(EPOSTA_HATA)
       return
     }
     if (!form.riza) {

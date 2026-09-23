@@ -3,6 +3,7 @@
 
 import { getCache } from '@vercel/functions'
 import { getProductById } from '../src/data/products.js'
+import { epostaGecerli, EPOSTA_HATA } from '../src/lib/eposta.js'
 
 const SOURCE = 'astrodamy-web'
 
@@ -34,8 +35,6 @@ function istemciIp(req) {
 }
 
 // --- Validasyon ---
-// Domain en az bir nokta içermeli ve her parçası dolu olmalı: a@b, a@b., a@.b, a@b..c reddedilir
-const EPOSTA = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/
 const TELEFON = /^\d{10,11}$/
 
 const metin = (deger) => (typeof deger === 'string' ? deger.trim() : '')
@@ -70,8 +69,8 @@ function dogrula(govde) {
   if (tanim.alanlar.includes('phone') && veri.phone && !TELEFON.test(veri.phone)) {
     hatalar.push('Telefon numarası yalnızca rakamlardan oluşmalı ve 10-11 haneli olmalıdır.')
   }
-  if (veri.email && (veri.email.length > 254 || !EPOSTA.test(veri.email))) {
-    hatalar.push('Lütfen geçerli bir e-posta adresi gir.')
+  if (veri.email && !epostaGecerli(veri.email)) {
+    hatalar.push(EPOSTA_HATA)
   }
 
   const paket = getProductById(govde.productId)
